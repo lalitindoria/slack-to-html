@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hectorbenitez/slack-to-html.git"
+    "url": "git+https://github.com/clearfeed/slack-to-html.git"
   },
   "keywords": [
     "slack",
@@ -23,9 +23,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hectorbenitez/slack-to-html/issues"
+    "url": "https://github.com/clearfeed/slack-to-html/issues"
   },
-  "homepage": "https://github.com/hectorbenitez/slack-to-html#readme",
+  "homepage": "https://github.com/clearfeed/slack-to-html#readme",
   "dependencies": {
     "xregexp": "^3.2.0"
   },
