@@ -1,5 +1,5 @@
 {
-  "name": "slack-to-html",
+  "name": "@clearfeed-ai/slack-to-html",
   "version": "1.0.0",
   "description": "Render Slack markdown as HTML",
   "main": "dist/bundle.js",
@@ -108,5 +108,9 @@
       ],
       "no-continue": 0
     }
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "author": "Lalit Indoria"
 }
