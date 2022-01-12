@@ -1,6 +1,6 @@
 # Slack to HTML
 
-Forked originally from https://github.com/swiftype/slack-hawk-down
+Forked originally from https://github.com/swiftype/slack-hawk-down & https://github.com/hectorbenitez/slack-to-html
 
 Slack markdown to HTML
 
