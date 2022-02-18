@@ -4,10 +4,12 @@ describe('control sequences', () => {
   describe('user mentions', () => {
     it('should render the label', () => {
       escapeForSlack('<@U123|someone>').should.equal('<span class="user-mention">@someone</span>')
+      escapeForSlack('<@W123|someone>').should.equal('<span class="user-mention">@someone</span>')
     })
 
     it('should render the user name if present', () => {
       escapeForSlack('<@U123>', { users: { U123: 'someone' } }).should.equal('<span class="user-mention">@someone</span>')
+      escapeForSlack('<@W123>', { users: { W123: 'someone' } }).should.equal('<span class="user-mention">@someone</span>')
     })
 
     it('should render the original value if user name is not present', () => {

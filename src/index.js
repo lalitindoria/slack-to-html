@@ -50,7 +50,7 @@ const whitespaceRegExp = XRegExp.cache('\\s', 'ns')
 
 // https://api.slack.com/docs/message-formatting
 const userMentionRegExp = XRegExp.cache(
-  '<@(((?<userID>U[^|>]+)(\\|(?<userName>[^>]+))?)|(?<userNameWithoutID>[^>]+))>',
+  '<@(((?<userID>[U|W][^|>]+)(\\|(?<userName>[^>]+))?)|(?<userNameWithoutID>[^>]+))>',
   'ng'
 )
 const channelMentionRegExp = XRegExp.cache(
