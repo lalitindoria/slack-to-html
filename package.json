@@ -1,6 +1,6 @@
 {
-  "name": "slack-to-html",
-  "version": "1.0.0",
+  "name": "@clearfeed-ai/slack-to-html",
+  "version": "1.0.2",
   "description": "Render Slack markdown as HTML",
   "main": "dist/bundle.js",
   "scripts": {
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hectorbenitez/slack-to-html.git"
+    "url": "git+https://github.com/clearfeed/slack-to-html.git"
   },
   "keywords": [
     "slack",
@@ -23,9 +23,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hectorbenitez/slack-to-html/issues"
+    "url": "https://github.com/clearfeed/slack-to-html/issues"
   },
-  "homepage": "https://github.com/hectorbenitez/slack-to-html#readme",
+  "homepage": "https://github.com/clearfeed/slack-to-html#readme",
   "dependencies": {
     "xregexp": "^3.2.0"
   },
@@ -108,5 +108,9 @@
       ],
       "no-continue": 0
     }
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "author": "Lalit Indoria"
 }
