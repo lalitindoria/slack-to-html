@@ -47,10 +47,10 @@ const blockSpanOpeningPatternString = '<span class="slack_block">'
 const lineBreakTagLiteral = '<br>'
 const newlineRegExp = XRegExp.cache('\\n', 'nsg')
 const whitespaceRegExp = XRegExp.cache('\\s', 'ns')
-const slackMrkdwnCharactersRegExp = XRegExp.cache('(?<char>[\\*\\&\\`\\~\\_])', 'ng')
+const slackMrkdwnCharactersRegExp = XRegExp.cache('(?<mrkwnCharacter>[\\*\\`\\~\\_]|&gt;)', 'ng')
 const slackMrkdwnPercentageCharsMap = {
   '*': '%2A',
-  '&': '%26',
+  '&gt;': '%26gt;',
   '`': '%27',
   '~': '%7E',
   _: '%5F'
@@ -417,7 +417,7 @@ const expandText = (text) => {
   return expandedTextAndWindows.text
 }
 
-const encodeSlackMrkdwnCharactersInLinks = (link) => XRegExp.replace(link, slackMrkdwnCharactersRegExp, (match) => slackMrkdwnPercentageCharsMap[match.char] || match.char)
+const encodeSlackMrkdwnCharactersInLinks = (link) => XRegExp.replace(link, slackMrkdwnCharactersRegExp, (match) => slackMrkdwnPercentageCharsMap[match.mrkwnCharacter] || match.mrkwnCharacter)
 const escapeForSlack = (text, options = {}) => {
   const customEmoji = options.customEmoji || {}
   const users = options.users || {}

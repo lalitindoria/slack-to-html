@@ -53,7 +53,7 @@ describe('control sequences', () => {
     })
 
     it('should encode characters used by slack mrkdwn in links and not replace them with divs', () => {
-      escapeForSlack('<https://swiftype.com?q=~``*bold*&```some code```~code_block~_italics_>').should.equal('<a href="https://swiftype.com?q=%7E%27%27%2Abold%2A%26%27%27%27some code%27%27%27%7Ecode%5Fblock%7E%5Fitalics%5F" target="_blank" rel="noopener noreferrer">https://swiftype.com?q=%7E%27%27%2Abold%2A%26%27%27%27some code%27%27%27%7Ecode%5Fblock%7E%5Fitalics%5F</a>')
+      escapeForSlack('<https://swiftype.com?q=~``*bold*&```some code```~code_block~_italics_&gt;&gtgt&g>').should.equal('<a href="https://swiftype.com?q=%7E%27%27%2Abold%2A&%27%27%27some code%27%27%27%7Ecode%5Fblock%7E%5Fitalics%5F%26gt;&gtgt&g" target="_blank" rel="noopener noreferrer">https://swiftype.com?q=%7E%27%27%2Abold%2A&%27%27%27some code%27%27%27%7Ecode%5Fblock%7E%5Fitalics%5F%26gt;&gtgt&g</a>')
     })
   })
 
