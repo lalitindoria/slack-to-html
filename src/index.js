@@ -29,7 +29,7 @@ const expandEmoji = (text, customEmoji) => {
         .join('')
       return `<span title=":${originalKey}:">${emojiHtml}</span>`
     }
-    return originalKey
+    return match // if emoji not found then return original
   })
 }
 
@@ -47,7 +47,14 @@ const blockSpanOpeningPatternString = '<span class="slack_block">'
 const lineBreakTagLiteral = '<br>'
 const newlineRegExp = XRegExp.cache('\\n', 'nsg')
 const whitespaceRegExp = XRegExp.cache('\\s', 'ns')
-
+const slackMrkdwnCharactersRegExp = XRegExp.cache('(?<mrkdwnCharacter>[\\*\\`\\~\\_]|&gt;)', 'ng')
+const slackMrkdwnPercentageCharsMap = {
+  '*': '%2A',
+  '&gt;': '%26gt;',
+  '`': '%27',
+  '~': '%7E',
+  _: '%5F'
+}
 // https://api.slack.com/docs/message-formatting
 const userMentionRegExp = XRegExp.cache(
   '<@(((?<userID>[U|W][^|>]+)(\\|(?<userName>[^>]+))?)|(?<userNameWithoutID>[^>]+))>',
@@ -410,27 +417,29 @@ const expandText = (text) => {
   return expandedTextAndWindows.text
 }
 
+const encodeSlackMrkdwnCharactersInLinks = (link) => XRegExp.replace(link, slackMrkdwnCharactersRegExp, (match) => slackMrkdwnPercentageCharsMap[match.mrkdwnCharacter] || match.mrkdwnCharacter)
 const escapeForSlack = (text, options = {}) => {
   const customEmoji = options.customEmoji || {}
   const users = options.users || {}
   const channels = options.channels || {}
   const usergroups = options.usergroups || {}
   const markdown = options.markdown || false
-
-  const expandedText = markdown ? expandText(text || '') : text || ''
+  /** Links can contain characters such as *_&~` that are a part of the character set used by
+   * Slack Mrkdwn so before converting slack mrkdwn to html we need to encode these characters
+  */
+  const textWithEncodedLink = XRegExp.replace(text || '',
+    linkRegExp,
+    (match) => {
+      const encodedLink = encodeSlackMrkdwnCharactersInLinks(match.linkUrl)
+      return `<a href="${encodedLink
+      }" target="_blank" rel="noopener noreferrer">${match.linkHtml || encodedLink
+      }</a>`
+    })
+  const expandedText = markdown ? expandText(textWithEncodedLink) : textWithEncodedLink
   return expandEmoji(
     XRegExp.replaceEach(expandedText, [
       [userMentionRegExp, replaceUserName(users)],
       [channelMentionRegExp, replaceChannelName(channels)],
-      [
-        linkRegExp,
-        (match) =>
-          `<a href="${
-            match.linkUrl
-          }" target="_blank" rel="noopener noreferrer">${
-            match.linkHtml || match.linkUrl
-          }</a>`,
-      ],
       [
         mailToRegExp,
         (match) =>
