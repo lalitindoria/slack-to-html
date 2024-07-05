@@ -390,7 +390,7 @@ const expandText = (text) => {
     italicOpeningPatternString,
     closingSpanPatternString,
     expandedTextAndWindows.windows,
-    { spacePadded: true, maxReplacements: 100 }
+    { maxReplacements: 100 }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
