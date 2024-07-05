@@ -47,6 +47,12 @@ describe('markdown', () => {
     it('should render an element', () => {
       escapeForSlackWithMarkdown('this is _italic_').should.equal('this is <span class="slack_italics">italic</span>')
     })
+
+    it("should render an element between quotes", () => {
+      escapeForSlackWithMarkdown('this is "_italic_"').should.equal(
+        'this is "<span class="slack_italics">italic</span>"'
+      );
+    });
   })
 
   describe('strikethrough', () => {
