@@ -72,6 +72,12 @@ describe('markdown', () => {
         'this is a VARIABLE_NAME_TEST'
       )
     })
+
+    it("render normal and italic text inside longer quotes", () => {
+      escapeForSlackWithMarkdown('"TEST_MESSAGE_TEST _italic_"').should.equal(
+       '"TEST_MESSAGE_TEST <em class="slack_italics">italic</em>"'
+      )
+    })
   })
 
   describe('strikethrough', () => {

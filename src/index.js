@@ -131,10 +131,9 @@ const buildOpeningDelimiterRegExp = (
   const escapedDelimiter = escapeDelimiter
     ? XRegExp.escape(delimiter)
     : delimiter
+  const prefixRegexPart = spacePadded ? '(?<openingCapturedWhitespace>^|\\s|["\'])' : ''
   return XRegExp.cache(
-    `${
-      spacePadded ? '(?<openingCapturedWhitespace>^|\\s)' : ''
-    }${prefixPattern}${escapedDelimiter}`,
+    `${prefixRegexPart}${prefixPattern}${escapedDelimiter}`,
     'ns'
   )
 }
@@ -148,10 +147,9 @@ const buildClosingDelimiterRegExp = (
   const escapedDelimiter = escapeDelimiter
     ? XRegExp.escape(delimiter)
     : delimiter
+  const suffixRegexPart = spacePadded ? '(?<closingCapturedWhitespace>\\s|["\']|$)' : ''
   return XRegExp.cache(
-    `${escapedDelimiter}${
-      spacePadded ? '(?<closingCapturedWhitespace>\\s|$)' : ''
-    }`,
+    `${escapedDelimiter}${suffixRegexPart}`,
     'ns'
   )
 }
@@ -352,15 +350,7 @@ const replaceInWindows = (
   )
 }
 
-const expandText = (inputText) => {
-  // Handle formatting bold, italics, and strikethrough within single and double quotes
-  const text = inputText.replace(/(['"])(?:(?=(\\?))\2.)*?\1/g, (quotedSegment) => {
-    return quotedSegment
-      .replace(/\*([^*]+)\*/g, `${boldOpeningPatternString}$1${boldClosingPatternString}`)
-      .replace(/_([^_]+)_/g, `${italicOpeningPatternString}$1${italicClosingPatternString}`)
-      .replace(/~([^~]+)~/g, `${strikethroughOpeningPatternString}$1${strikethroughClosingPatternString}`)
-  })
-
+const expandText = (text) => {
   let expandedTextAndWindows
   expandedTextAndWindows = { text: text, windows: [[0, text.length]] }
   expandedTextAndWindows = replaceInWindows(
