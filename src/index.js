@@ -352,7 +352,15 @@ const replaceInWindows = (
   )
 }
 
-const expandText = (text) => {
+const expandText = (inputText) => {
+  // Handle formatting bold, italics, and strikethrough within single and double quotes
+  const text = inputText.replace(/(['"])(?:(?=(\\?))\2.)*?\1/g, (quotedSegment) => {
+    return quotedSegment
+      .replace(/\*([^*]+)\*/g, `${boldOpeningPatternString}$1${boldClosingPatternString}`)
+      .replace(/_([^_]+)_/g, `${italicOpeningPatternString}$1${italicClosingPatternString}`)
+      .replace(/~([^~]+)~/g, `${strikethroughOpeningPatternString}$1${strikethroughClosingPatternString}`)
+  })
+
   let expandedTextAndWindows
   expandedTextAndWindows = { text: text, windows: [[0, text.length]] }
   expandedTextAndWindows = replaceInWindows(
@@ -377,7 +385,7 @@ const expandText = (text) => {
     boldOpeningPatternString,
     boldClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true, }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
@@ -385,7 +393,7 @@ const expandText = (text) => {
     strikethroughOpeningPatternString,
     strikethroughClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true, }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
@@ -393,7 +401,7 @@ const expandText = (text) => {
     italicOpeningPatternString,
     italicClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
