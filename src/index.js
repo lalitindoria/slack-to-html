@@ -131,10 +131,9 @@ const buildOpeningDelimiterRegExp = (
   const escapedDelimiter = escapeDelimiter
     ? XRegExp.escape(delimiter)
     : delimiter
+  const prefixRegexPart = spacePadded ? '(?<openingCapturedWhitespace>^|\\s|["\'])' : ''
   return XRegExp.cache(
-    `${
-      spacePadded ? '(?<openingCapturedWhitespace>^|\\s)' : ''
-    }${prefixPattern}${escapedDelimiter}`,
+    `${prefixRegexPart}${prefixPattern}${escapedDelimiter}`,
     'ns'
   )
 }
@@ -148,10 +147,9 @@ const buildClosingDelimiterRegExp = (
   const escapedDelimiter = escapeDelimiter
     ? XRegExp.escape(delimiter)
     : delimiter
+  const suffixRegexPart = spacePadded ? '(?<closingCapturedWhitespace>\\s|["\']|$)' : ''
   return XRegExp.cache(
-    `${escapedDelimiter}${
-      spacePadded ? '(?<closingCapturedWhitespace>\\s|$)' : ''
-    }`,
+    `${escapedDelimiter}${suffixRegexPart}`,
     'ns'
   )
 }
@@ -377,7 +375,7 @@ const expandText = (text) => {
     boldOpeningPatternString,
     boldClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true, }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
@@ -385,7 +383,7 @@ const expandText = (text) => {
     strikethroughOpeningPatternString,
     strikethroughClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true, }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
@@ -393,7 +391,7 @@ const expandText = (text) => {
     italicOpeningPatternString,
     italicClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
