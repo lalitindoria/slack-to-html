@@ -119,7 +119,7 @@ const replaceUserGroupName = (usergroups) => (match) => {
     match.subteamName ||
     (match.subteamID && usergroups && usergroups[match.subteamID])
   if (userGroupName) {
-    return `@${userGroupName}`;
+    return `@${userGroupName}`
   }
   return escapeTags(match.toString())
 }
