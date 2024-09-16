@@ -91,11 +91,15 @@ describe('control sequences', () => {
 
       describe('for the subteam command', () => {
         it('should render as a group link when the label is present', () => {
-          escapeForSlack('<!subteam^S123|swiftype-eng>').should.equal('swiftype-eng')
+          escapeForSlack("<!subteam^S123|swiftype-eng>").should.equal(
+            "@swiftype-eng"
+          );
         })
 
         it('should render the group name if present', () => {
-          escapeForSlack('<!subteam^S123>', { usergroups: { S123: 'swiftype-eng' } }).should.equal('swiftype-eng')
+          escapeForSlack("<!subteam^S123>", {
+            usergroups: { S123: "swiftype-eng" },
+          }).should.equal("@swiftype-eng");
         })
 
         it('should render the original value if the channel name is not present', () => {
