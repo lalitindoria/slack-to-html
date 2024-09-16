@@ -23,7 +23,7 @@ describe('markdown', () => {
     })
 
     it('should not affect markdown after the code block', () => {
-      escapeForSlackWithMarkdown('```this is a code multiline``` with some *bold* text after it').should.equal('<div class="slack_code"><code>this is a code multiline</code></div> with some <span class="slack_bold">bold</span> text after it')
+      escapeForSlackWithMarkdown('```this is a code multiline``` with some *bold* text after it').should.equal('<div class="slack_code"><code>this is a code multiline</code></div> with some <strong class="slack_bold">bold</strong> text after it')
     })
   })
 
@@ -35,23 +35,66 @@ describe('markdown', () => {
 
   describe('bold', () => {
     it('should render an element', () => {
-      escapeForSlackWithMarkdown('this is *bold*').should.equal('this is <span class="slack_bold">bold</span>')
+      escapeForSlackWithMarkdown('this is *bold*').should.equal('this is <strong class="slack_bold">bold</strong>')
     })
 
     it('should capture as much as possible', () => {
-      escapeForSlackWithMarkdown('this is *bold*with*more*asterisks*').should.equal('this is <span class="slack_bold">bold*with*more*asterisks</span>')
+      escapeForSlackWithMarkdown('this is *bold*with*more*asterisks*').should.equal('this is <strong class="slack_bold">bold*with*more*asterisks</strong>')
+    })
+
+
+    it("should render an element between quotes", () => {
+      escapeForSlackWithMarkdown('this is "*bold*"').should.equal(
+        'this is "<strong class="slack_bold">bold</strong>"'
+      )
+    })
+
+    it("should render a normal text with underscores", () => {
+      escapeForSlackWithMarkdown('this is a VARIABLE*NAME*TEST').should.equal(
+        'this is a VARIABLE*NAME*TEST'
+      )
     })
   })
 
   describe('italic', () => {
     it('should render an element', () => {
-      escapeForSlackWithMarkdown('this is _italic_').should.equal('this is <span class="slack_italics">italic</span>')
+      escapeForSlackWithMarkdown('this is _italic_').should.equal('this is <em class="slack_italics">italic</em>')
+    })
+
+    it("should render an element between quotes", () => {
+      escapeForSlackWithMarkdown('this is "_italic_"').should.equal(
+        'this is "<em class="slack_italics">italic</em>"'
+      )
+    })
+
+    it("should render a normal text with underscores", () => {
+      escapeForSlackWithMarkdown('this is a VARIABLE_NAME_TEST').should.equal(
+        'this is a VARIABLE_NAME_TEST'
+      )
+    })
+
+    it("render normal and italic text inside longer quotes", () => {
+      escapeForSlackWithMarkdown('"TEST_MESSAGE_TEST _italic_"').should.equal(
+       '"TEST_MESSAGE_TEST <em class="slack_italics">italic</em>"'
+      )
     })
   })
 
   describe('strikethrough', () => {
     it('should render an element', () => {
-      escapeForSlackWithMarkdown('this is ~struck~').should.equal('this is <span class="slack_strikethrough">struck</span>')
+      escapeForSlackWithMarkdown('this is ~struck~').should.equal('this is <s class="slack_strikethrough">struck</s>')
+    })
+
+    it("should render an element between quotes", () => {
+      escapeForSlackWithMarkdown('this is "~struck~"').should.equal(
+        'this is "<s class="slack_strikethrough">struck</s>"'
+      )
+    })
+
+    it("should render a normal text with underscores", () => {
+      escapeForSlackWithMarkdown('this is a VARIABLE~NAME~TEST').should.equal(
+        'this is a VARIABLE~NAME~TEST'
+      )
     })
   })
 

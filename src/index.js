@@ -39,9 +39,12 @@ const codeDivOpeningPatternString = '<div class="slack_code">'
 const codeSpanOpeningPatternString = '<span class="slack_code">'
 const openingCodePatternString = '<code>'
 const closingCodePatternString = '</code>'
-const boldOpeningPatternString = '<span class="slack_bold">'
-const strikethroughOpeningPatternString = '<span class="slack_strikethrough">'
-const italicOpeningPatternString = '<span class="slack_italics">'
+const boldOpeningPatternString = '<strong class="slack_bold">'
+const boldClosingPatternString = '</strong>'
+const strikethroughOpeningPatternString = '<s class="slack_strikethrough">'
+const strikethroughClosingPatternString = '</s>'
+const italicOpeningPatternString = '<em class="slack_italics">'
+const italicClosingPatternString = '</em>'
 const blockDivOpeningPatternString = '<div class="slack_block">'
 const blockSpanOpeningPatternString = '<span class="slack_block">'
 const lineBreakTagLiteral = '<br>'
@@ -128,10 +131,9 @@ const buildOpeningDelimiterRegExp = (
   const escapedDelimiter = escapeDelimiter
     ? XRegExp.escape(delimiter)
     : delimiter
+  const prefixRegexPart = spacePadded ? '(?<openingCapturedWhitespace>^|\\s|["\'])' : ''
   return XRegExp.cache(
-    `${
-      spacePadded ? '(?<openingCapturedWhitespace>^|\\s)' : ''
-    }${prefixPattern}${escapedDelimiter}`,
+    `${prefixRegexPart}${prefixPattern}${escapedDelimiter}`,
     'ns'
   )
 }
@@ -145,10 +147,9 @@ const buildClosingDelimiterRegExp = (
   const escapedDelimiter = escapeDelimiter
     ? XRegExp.escape(delimiter)
     : delimiter
+  const suffixRegexPart = spacePadded ? '(?<closingCapturedWhitespace>\\s|["\']|$)' : ''
   return XRegExp.cache(
-    `${escapedDelimiter}${
-      spacePadded ? '(?<closingCapturedWhitespace>\\s|$)' : ''
-    }`,
+    `${escapedDelimiter}${suffixRegexPart}`,
     'ns'
   )
 }
@@ -372,25 +373,25 @@ const expandText = (text) => {
     expandedTextAndWindows.text,
     '*',
     boldOpeningPatternString,
-    closingSpanPatternString,
+    boldClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true, }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
     '~',
     strikethroughOpeningPatternString,
-    closingSpanPatternString,
+    strikethroughClosingPatternString,
     expandedTextAndWindows.windows,
-    { maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true, }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
     '_',
     italicOpeningPatternString,
-    closingSpanPatternString,
+    italicClosingPatternString,
     expandedTextAndWindows.windows,
-    { spacePadded: true, maxReplacements: 100 }
+    { maxReplacements: 100, spacePadded: true }
   )
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
