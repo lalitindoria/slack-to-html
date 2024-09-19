@@ -46,7 +46,8 @@ const strikethroughClosingPatternString = '</s>'
 const italicOpeningPatternString = '<em class="slack_italics">'
 const italicClosingPatternString = '</em>'
 const blockDivOpeningPatternString = '<div class="slack_block">'
-const blockSpanOpeningPatternString = '<span class="slack_block">'
+const blockquoteOpeningPatternString = '<blockquote>'
+const blockquoteClosingPatternString = '</blockquote>'
 const lineBreakTagLiteral = '<br>'
 const newlineRegExp = XRegExp.cache('\\n', 'nsg')
 const whitespaceRegExp = XRegExp.cache('\\s', 'ns')
@@ -409,10 +410,10 @@ const expandText = (text) => {
   expandedTextAndWindows = replaceInWindows(
     expandedTextAndWindows.text,
     '&gt;',
-    blockSpanOpeningPatternString,
-    closingSpanPatternString,
+    blockquoteOpeningPatternString,
+    blockquoteClosingPatternString,
     expandedTextAndWindows.windows,
-    { prefixPattern: '^\\s*', endingPattern: '\\n|$', maxReplacements: 100 }
+    { endingPattern: '\\n|$', maxReplacements: 100 }
   )
 
   return expandedTextAndWindows.text
